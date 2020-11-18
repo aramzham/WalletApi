@@ -15,7 +15,7 @@ namespace WalletTask.WebApi.Controllers
         }
 
         [HttpPost("Add")]
-        public async Task Add([FromBody]WalletRequestModel walletRequestModel)
+        public async Task Add([FromBody] WalletRequestModel walletRequestModel)
         {
             try
             {
@@ -29,7 +29,7 @@ namespace WalletTask.WebApi.Controllers
         }
 
         [HttpPost("TopUp")]
-        public async Task TopUp([FromBody]WalletRequestModel walletRequestModel)
+        public async Task TopUp([FromBody] WalletRequestModel walletRequestModel)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace WalletTask.WebApi.Controllers
         }
 
         [HttpPost("Transfer")]
-        public async Task Transfer([FromBody]WalletTransferRequestModel walletTransferRequestModel)
+        public async Task Transfer([FromBody] WalletTransferRequestModel walletTransferRequestModel)
         {
             try
             {

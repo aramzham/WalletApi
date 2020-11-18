@@ -36,4 +36,9 @@
         public const string THB = "THB";
         public const string ZAR = "ZAR";
     }
+
+    public static class ExceptionMessages
+    {
+        public const string NotEnoughFunds = "Not enough funds";
+    }
 }

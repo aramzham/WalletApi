@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using WalletTask.BL.Interfaces;
@@ -18,14 +20,14 @@ namespace WalletTask.BL.Implementations
             await _dal.SaveChangesAsync();
         }
 
-        public async Task<string> GetBalance(int userId)
+        public async Task<Dictionary<string, decimal>> GetBalance(int userId)
         {
             var user = await _dal.UserDAL.Get(userId);
             if (user is null)
                 return null;
 
-            var walletBalance = user.Wallets.ToDictionary(k => k.Currency, v => v.Amount);
-            return JsonConvert.SerializeObject(walletBalance);
+            var walletBalance = user.Wallets.ToDictionary(k => k.Currency, v => Math.Round(v.Amount, 2));
+            return walletBalance;
         }
     }
 }

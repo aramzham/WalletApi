@@ -38,7 +38,7 @@ namespace WalletTask.WebApi
             services.AddControllers();
 
             // bl
-            services.AddScoped(x=> new WalletTaskBL(connectionString));
+            services.AddSingleton(x=> new WalletTaskBL(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

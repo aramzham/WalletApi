@@ -1,7 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using WalletTask.BL.Interfaces;
-using WalletTask.Common.Helpers;
+using WalletTask.Common;
 using WalletTask.Common.Helpers.CurrencyHelper;
 using WalletTask.DAL;
 using WalletTask.DAL.Models;
@@ -17,7 +18,7 @@ namespace WalletTask.BL.Implementations
         public async Task TopUp(int userId, string currency, decimal amount)
         {
             var wallet = await GetWallet(userId, currency);
-            if(wallet is null)
+            if (wallet is null)
                 return;
 
             wallet.Amount += amount;
@@ -31,6 +32,9 @@ namespace WalletTask.BL.Implementations
             if (wallet is null)
                 return;
 
+            if(amount > wallet.Amount)
+                throw new Exception(ExceptionMessages.NotEnoughFunds);
+
             wallet.Amount -= amount;
 
             await _dal.SaveChangesAsync();
@@ -39,16 +43,19 @@ namespace WalletTask.BL.Implementations
         public async Task Transfer(int userId, string fromCurrency, string toCurrency, decimal amount)
         {
             var user = await _dal.UserDAL.Get(userId);
-            if(user is null)
+            if (user is null)
                 return;
 
             var fromWallet = user.Wallets.FirstOrDefault(x => x.Currency == fromCurrency);
-            if(fromWallet is null)
+            if (fromWallet is null)
                 return;
 
             var toWallet = user.Wallets.FirstOrDefault(x => x.Currency == toCurrency);
-            if(toWallet is null)
+            if (toWallet is null)
                 return;
+
+            if (amount > fromWallet.Amount)
+                throw new Exception(ExceptionMessages.NotEnoughFunds);
 
             fromWallet.Amount -= amount;
             var toCurrencyAmount = CurrencyHelper.Convert(fromCurrency, toCurrency, amount);
@@ -60,10 +67,10 @@ namespace WalletTask.BL.Implementations
         public async Task Add(int userId, string currency)
         {
             var user = await _dal.UserDAL.Get(userId);
-            if (user is null)
+            if (user is null || user.Wallets.FirstOrDefault(x => x.Currency == currency) != null) // wallet with such currency already exists
                 return;
 
-            user.Wallets.Add(new Wallet(){Currency = currency, UserId = userId});
+            await _dal.WalletDAL.Add(userId, currency);
 
             await _dal.SaveChangesAsync();
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -29,7 +30,7 @@ namespace WalletTask.WebApi.Controllers
         }
 
         [HttpGet("Balance/{userId}")]
-        public async Task<string> GetBalance(int userId)
+        public async Task<Dictionary<string,decimal>> GetBalance(int userId)
         {
             try
             {

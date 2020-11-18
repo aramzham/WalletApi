@@ -13,12 +13,12 @@ namespace WalletTask.DAL.Implementations
 
         public async Task Add(string name)
         {
-            await _db.Users.AddAsync(new User() {Name = name});
+            await _db.Users.AddAsync(new User() { Name = name });
         }
 
         public async Task<User> Get(int userId)
         {
-            return await _db.Users.FirstOrDefaultAsync(x => x.Id == userId);
+            return await _db.Users.Include(x => x.Wallets).FirstOrDefaultAsync(x => x.Id == userId);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace WalletTask.DAL
 {
     public class WalletTaskDAL : IDisposable
     {
-        private string _connectionString;
+        private readonly string _connectionString;
 
         private WalletTaskContext _db;
 
