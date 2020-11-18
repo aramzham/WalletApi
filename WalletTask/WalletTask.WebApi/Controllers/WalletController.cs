@@ -14,6 +14,20 @@ namespace WalletTask.WebApi.Controllers
         {
         }
 
+        [HttpPost("Add")]
+        public async Task Add([FromBody]WalletRequestModel walletRequestModel)
+        {
+            try
+            {
+                await _bl.WalletBL.Add(walletRequestModel.UserId, walletRequestModel.Currency);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Add");
+                throw;
+            }
+        }
+
         [HttpPost("TopUp")]
         public async Task TopUp([FromBody]WalletRequestModel walletRequestModel)
         {

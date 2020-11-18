@@ -14,6 +14,6 @@ namespace WalletTask.DAL.Models
         public string Name { get; set; }
 
         [ForeignKey("UserId")]
-        public virtual ICollection<Wallet> Wallets { get; set; }
+        public virtual ICollection<Wallet> Wallets { get; set; } = new List<Wallet>();
     }
 }

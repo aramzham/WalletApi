@@ -7,5 +7,6 @@ namespace WalletTask.BL.Interfaces
         Task TopUp(int userId, string currency, decimal amount);
         Task Withdraw(int userId, string currency, decimal amount);
         Task Transfer(int userId, string fromCurrency, string toCurrency, decimal amount);
+        Task Add(int userId, string currency);
     }
 }

@@ -57,6 +57,17 @@ namespace WalletTask.BL.Implementations
             await _dal.SaveChangesAsync();
         }
 
+        public async Task Add(int userId, string currency)
+        {
+            var user = await _dal.UserDAL.Get(userId);
+            if (user is null)
+                return;
+
+            user.Wallets.Add(new Wallet(){Currency = currency, UserId = userId});
+
+            await _dal.SaveChangesAsync();
+        }
+
         private async Task<Wallet> GetWallet(int userId, string currency)
         {
             var user = await _dal.UserDAL.Get(userId);

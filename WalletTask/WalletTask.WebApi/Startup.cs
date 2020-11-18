@@ -33,11 +33,12 @@ namespace WalletTask.WebApi
             });
 
             services.AddSingleton(Configuration);
-            services.AddDbContext<WalletTaskContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<WalletTaskContext>(options => options.UseSqlServer(connectionString));
             services.AddControllers();
 
             // bl
-            services.AddTransient<IWalletTaskBL, WalletTaskBL>();
+            services.AddScoped(x=> new WalletTaskBL(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

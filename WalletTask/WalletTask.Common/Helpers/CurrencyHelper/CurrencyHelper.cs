@@ -26,12 +26,13 @@ namespace WalletTask.Common.Helpers.CurrencyHelper
 
         private static decimal GetCrossRate(string fromCurrency, string toCurrency, CubeCube cubeCube)
         {
-            var toCube = cubeCube.Cube.FirstOrDefault(x => x.currency == toCurrency);
-            if (fromCurrency == "EUR")
-                return toCube.rate;
+            var currencyDict = cubeCube.Cube.ToDictionary(k => k.currency, v => v.rate);
+            var toCubeRate = currencyDict[toCurrency];
+            if (fromCurrency == CurrencyCodes.EUR)
+                return toCubeRate;
 
-            var fromCube = cubeCube.Cube.FirstOrDefault(x => x.currency == fromCurrency);
-            return fromCube.rate / toCube.rate;
+            var fromCubeRate = currencyDict[fromCurrency];
+            return fromCubeRate / toCubeRate;
         }
     }
 }
