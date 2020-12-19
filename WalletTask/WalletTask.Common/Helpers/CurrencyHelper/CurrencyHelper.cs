@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace WalletTask.Common.Helpers.CurrencyHelper
 {
-    public class CurrencyHelper
+    public class CurrencyHelper : ICurrencyHelper
     {
         private const string _url = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
 
-        public static decimal Convert(string fromCurrency, string toCurrency, decimal amount)
+        public decimal Convert(string fromCurrency, string toCurrency, decimal amount)
         {
             var result = SendGetRequest(_url).Result;
             var envelope = XmlHelper.FromXml<Envelope>(result);

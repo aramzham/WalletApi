@@ -4,14 +4,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using WalletTask.BL;
+using WalletTask.Common.Helpers.CurrencyHelper;
 using WalletTask.WebApi.Models.RequestModels.WalletRequestModels;
 
 namespace WalletTask.WebApi.Controllers
 {
     public class WalletController : BaseController
     {
-        public WalletController(WalletTaskBL bl, IConfiguration configuration, ILogger<BaseController> logger) : base(bl, configuration, logger)
+        private readonly ICurrencyHelper _currencyHelper;
+
+        public WalletController(WalletTaskBL bl, ICurrencyHelper currencyHelper, IConfiguration configuration, ILogger<BaseController> logger) : base(bl, configuration, logger)
         {
+            _currencyHelper = currencyHelper;
         }
 
         [HttpPost("Add")]
@@ -61,7 +65,7 @@ namespace WalletTask.WebApi.Controllers
         {
             try
             {
-                await _bl.WalletBL.Transfer(walletTransferRequestModel.UserId, walletTransferRequestModel.FromCurrency, walletTransferRequestModel.ToCurrency, walletTransferRequestModel.Amount);
+                await _bl.WalletBL.Transfer(walletTransferRequestModel.UserId, walletTransferRequestModel.FromCurrency, walletTransferRequestModel.ToCurrency, walletTransferRequestModel.Amount, _currencyHelper);
             }
             catch (Exception e)
             {

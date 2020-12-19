@@ -40,13 +40,11 @@ namespace WalletTask.BL.Implementations
             await _dal.SaveChangesAsync();
         }
 
-        public async Task Transfer(int userId, string fromCurrency, string toCurrency, decimal amount)
+        public async Task Transfer(int userId, string fromCurrency, string toCurrency, decimal amount, ICurrencyHelper currencyHelper)
         {
             var user = await _dal.UserDAL.Get(userId);
-            if (user is null)
-                return;
 
-            var fromWallet = user.Wallets.FirstOrDefault(x => x.Currency == fromCurrency);
+            var fromWallet = user?.Wallets.FirstOrDefault(x => x.Currency == fromCurrency);
             if (fromWallet is null)
                 return;
 
@@ -58,7 +56,7 @@ namespace WalletTask.BL.Implementations
                 throw new Exception(ExceptionMessages.NotEnoughFunds);
 
             fromWallet.Amount -= amount;
-            var toCurrencyAmount = CurrencyHelper.Convert(fromCurrency, toCurrency, amount);
+            var toCurrencyAmount = currencyHelper.Convert(fromCurrency, toCurrency, amount);
             toWallet.Amount += toCurrencyAmount;
 
             await _dal.SaveChangesAsync();

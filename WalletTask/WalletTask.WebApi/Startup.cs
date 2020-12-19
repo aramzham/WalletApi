@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using WalletTask.BL;
+using WalletTask.Common.Helpers.CurrencyHelper;
 using WalletTask.DAL.Models;
 using WalletTask.WebApi.Core.Extensions;
 using WalletTask.WebApi.Core.Middlewares;
@@ -40,6 +41,8 @@ namespace WalletTask.WebApi
 
             // bl
             services.AddWalletBL(connectionString);
+
+            services.AddTransient<ICurrencyHelper, CurrencyHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
