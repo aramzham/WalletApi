@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using WalletTask.BL;
 using WalletTask.DAL.Models;
+using WalletTask.WebApi.Core.Extensions;
 using WalletTask.WebApi.Core.Middlewares;
 
 namespace WalletTask.WebApi
@@ -38,7 +39,7 @@ namespace WalletTask.WebApi
             services.AddControllers();
 
             // bl
-            services.AddSingleton(x=> new WalletTaskBL(connectionString));
+            services.AddWalletBL(connectionString);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
